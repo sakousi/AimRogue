@@ -6,6 +6,13 @@ public class CrossairColor : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GetComponent<SpriteRenderer>().color = color;
+        //apply the color to the crossair as ui images
+        foreach (Transform child in transform)
+        {
+            if (child.GetComponent<UnityEngine.UI.Image>() != null)
+            {
+                child.GetComponent<UnityEngine.UI.Image>().color = color;
+            }
+        }
     }
 }
