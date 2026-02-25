@@ -20,8 +20,10 @@ public class CameraRaycast : MonoBehaviour
     void ShootRay(Vector3 mousePos)
     {
 
-        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
+
+        Debug.DrawRay(ray.origin, ray.direction * range, Color.red, 1f);
 
         if (Physics.Raycast(ray, out hit, range))
         {
