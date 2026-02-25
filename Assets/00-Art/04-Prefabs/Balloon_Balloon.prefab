@@ -127,3 +127,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   explosionEffect: {fileID: 5880797563127281583, guid: 265d3a5ba69981a4698ceabcedf368b0, type: 3}
+  soundEffect: {fileID: 8300000, guid: 0bd05763df902854a80475577a26666a, type: 3}
