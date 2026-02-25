@@ -1,4 +1,0 @@
-repository "AimRogue/AimRogue@1375861418625@cloud"
-  path "/"
-    br "/main"
-    co "/main"

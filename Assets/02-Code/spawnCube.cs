@@ -12,12 +12,6 @@ public class spawnCube : MonoBehaviour
         Invoke("StopSpawning", 30f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SpawnPrefab()
     {
         GameObject cube = Instantiate((cubePrefab));

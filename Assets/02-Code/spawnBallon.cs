@@ -19,12 +19,6 @@ public class spawnBallon : MonoBehaviour
         Invoke("StopSpawning", 30f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SpawnPrefab()
     {
         GameObject ballon = Instantiate(ballonPrefab);
