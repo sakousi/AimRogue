@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WeaponReload : MonoBehaviour
 {
+    public AudioClip reloadSound;
+
     public float reloadTime = 2f;
     public bool isReloading = false;
 
@@ -19,6 +21,7 @@ public class WeaponReload : MonoBehaviour
     {
         isReloading = true;
         Debug.Log("Reloading...");
+        AudioSource.PlayClipAtPoint(reloadSound, transform.position);
         yield return new WaitForSeconds(reloadTime);
         Debug.Log("Reloaded!");
         isReloading = false;
