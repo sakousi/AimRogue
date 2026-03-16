@@ -10,6 +10,8 @@ public class PlayerCameraRecoil : MonoBehaviour
     private Vector3 targetRotation;
     private Quaternion initialLocalRotation;
 
+    private bool isRecoiling = false;
+
     void Start()
     {
         initialLocalRotation = transform.localRotation;
@@ -26,22 +28,34 @@ public class PlayerCameraRecoil : MonoBehaviour
 
     void Update()
     {
-        targetRotation = Vector3.Lerp(
-            targetRotation,
-            Vector3.zero,
-            returnSpeed * Time.deltaTime
-        );
+        if (targetRotation.magnitude > 0.01f)
+        {
+            isRecoiling = true;
+        }
+        else
+        {
+            isRecoiling = false;
+        }
 
-        currentRotation = Vector3.Lerp(
-            currentRotation,
-            targetRotation,
-            snappiness * Time.deltaTime
-        );
+        if (isRecoiling)
+        {
+            targetRotation = Vector3.Lerp(
+                targetRotation,
+                Vector3.zero,
+                returnSpeed * Time.deltaTime
+            );
 
-        transform.localRotation = initialLocalRotation * Quaternion.Euler(
-            -currentRotation.x,
-            currentRotation.y,
-            0f
-        );
+            currentRotation = Vector3.Lerp(
+                currentRotation,
+                targetRotation,
+                snappiness * Time.deltaTime
+            );
+
+            transform.localRotation = initialLocalRotation * Quaternion.Euler(
+                -currentRotation.x,
+                currentRotation.y,
+                0f
+            );
+        }
     }
 }

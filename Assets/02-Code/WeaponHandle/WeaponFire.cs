@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,6 +11,7 @@ public class WeaponFire : MonoBehaviour
     [Header("Fire")]
     public float fireRate = 0.5f;
     private float nextTimeToFire = 0f;
+    private bool isFiring = false;
 
     [Header("References")]
     public WeaponCameraRaycast raycast;
@@ -50,11 +52,15 @@ public class WeaponFire : MonoBehaviour
                 return;
             }
 
+            isFiring = true;
+
             Shoot();
         }
 
-        HandleRecoil();
-
+        if(isFiring)
+        {
+            HandleRecoil();
+        }
     }
 
     void Shoot()
@@ -85,6 +91,11 @@ public class WeaponFire : MonoBehaviour
 
     void HandleRecoil()
     {
+        if (targetRecoilPosition.magnitude < 0.01f && targetRecoilRotation.magnitude < 0.01f)
+        {
+            isFiring = false;
+        }
+
         // Les cibles reviennent progressivement vers zéro
         targetRecoilPosition = Vector3.Lerp(
             targetRecoilPosition,
