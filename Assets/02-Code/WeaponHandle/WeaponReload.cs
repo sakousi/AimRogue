@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,9 +16,12 @@ public class WeaponReload : MonoBehaviour
     public float reloadTime = 2f;
     public bool isReloading = false;
 
+    public event Action<int, int> OnAmmoChanged;
+
     void Start()
     {
         currentAmmo = magazineSize;
+        NotifyAmmoChanged();
     }
 
     void Update()
@@ -40,6 +44,7 @@ public class WeaponReload : MonoBehaviour
             return false;
 
         currentAmmo--;
+        NotifyAmmoChanged();
         return true;
     }
 
@@ -62,8 +67,14 @@ public class WeaponReload : MonoBehaviour
         currentAmmo += bulletsToLoad;
         reserveAmmo -= bulletsToLoad;
 
-        Debug.Log("Reloaded! Ammo: " + currentAmmo + " / " + reserveAmmo);
+        NotifyAmmoChanged();
 
+        Debug.Log("Reloaded!");
         isReloading = false;
+    }
+
+    private void NotifyAmmoChanged()
+    {
+        OnAmmoChanged?.Invoke(currentAmmo, reserveAmmo);
     }
 }
