@@ -649,6 +649,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::spawnBallon
   ballonPrefab: {fileID: 6302271506177754980, guid: 69dda48c203d3474b9d2492c7e6f30b7, type: 3}
+  redBalloonPrefab: {fileID: 6302271506177754980, guid: 11111111111111111111111111111111, type: 3}
+  blueBalloonPrefab: {fileID: 6302271506177754980, guid: 22222222222222222222222222222222, type: 3}
+  yellowBalloonPrefab: {fileID: 6302271506177754980, guid: 33333333333333333333333333333333, type: 3}
+  violetBalloonPrefab: {fileID: 6302271506177754980, guid: 44444444444444444444444444444444, type: 3}
+  blackBalloonPrefab: {fileID: 6302271506177754980, guid: 55555555555555555555555555555555, type: 3}
   sizeBallon: 0.5
   ymin: 0.1
   ymax: 2.2
