@@ -141,7 +141,9 @@ public class WeaponFire : MonoBehaviour
     }
 
     void Shoot()
-    {
+    {    
+        if (!reload.TryConsumeBullet())
+            return;
         Debug.Log("Weapon Fired!");
         shotFired.FireShot();
         raycast.Shoot();
