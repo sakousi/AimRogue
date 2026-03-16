@@ -1,7 +1,13 @@
 using System;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+public enum FireMode
+{
+    FullAuto,
+    Burst,
+    ShotByShot
+}
 
 [RequireComponent(typeof(WeaponReload))]
 [RequireComponent(typeof(WeaponCameraRaycast))]
@@ -10,8 +16,13 @@ public class WeaponFire : MonoBehaviour
 {
     [Header("Fire")]
     public float fireRate = 0.5f;
+    public FireMode fireMode = FireMode.ShotByShot;
+    public int burstCount = 3;
+
     private float nextTimeToFire = 0f;
     private bool isFiring = false;
+    private bool isBursting = false;
+    private int burstShotsRemaining = 0;
 
     [Header("References")]
     public WeaponCameraRaycast raycast;
@@ -43,21 +54,87 @@ public class WeaponFire : MonoBehaviour
 
     void Update()
     {
+        if (reload != null && reload.isReloading)
+        {
+            HandleRecoilIfNeeded();
+            return;
+        }
+
+        switch (fireMode)
+        {
+            case FireMode.ShotByShot:
+                HandleShotByShot();
+                break;
+
+            case FireMode.FullAuto:
+                HandleFullAuto();
+                break;
+
+            case FireMode.Burst:
+                HandleBurstInput();
+                break;
+        }
+
+        HandleBurstFire();
+        HandleRecoilIfNeeded();
+    }
+
+    void HandleShotByShot()
+    {
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + fireRate;
-
-            if (reload != null && reload.isReloading)
-            {
-                return;
-            }
-
             isFiring = true;
-
             Shoot();
         }
+    }
 
-        if(isFiring)
+    void HandleFullAuto()
+    {
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + fireRate;
+            isFiring = true;
+            Shoot();
+        }
+    }
+
+    void HandleBurstInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isBursting)
+        {
+            isBursting = true;
+            burstShotsRemaining = burstCount;
+        }
+    }
+
+    void HandleBurstFire()
+    {
+        if (!isBursting)
+        {
+            return;
+        }
+
+        if (Time.time >= nextTimeToFire)
+        {
+            if (burstShotsRemaining > 0)
+            {
+                nextTimeToFire = Time.time + fireRate;
+                isFiring = true;
+                Shoot();
+                burstShotsRemaining--;
+            }
+
+            if (burstShotsRemaining <= 0)
+            {
+                isBursting = false;
+            }
+        }
+    }
+
+    void HandleRecoilIfNeeded()
+    {
+        if (isFiring)
         {
             HandleRecoil();
         }
@@ -91,11 +168,6 @@ public class WeaponFire : MonoBehaviour
 
     void HandleRecoil()
     {
-        if (targetRecoilPosition.magnitude < 0.01f && targetRecoilRotation.magnitude < 0.01f)
-        {
-            isFiring = false;
-        }
-
         // Les cibles reviennent progressivement vers zéro
         targetRecoilPosition = Vector3.Lerp(
             targetRecoilPosition,
@@ -125,5 +197,15 @@ public class WeaponFire : MonoBehaviour
         // Application sur l'arme
         transform.localPosition = initialLocalPosition + currentRecoilPosition;
         transform.localRotation = initialLocalRotation * Quaternion.Euler(currentRecoilRotation);
+
+        if (targetRecoilPosition.magnitude < 0.01f &&
+            targetRecoilRotation.magnitude < 0.01f &&
+            currentRecoilPosition.magnitude < 0.01f &&
+            currentRecoilRotation.magnitude < 0.01f)
+        {
+            isFiring = false;
+            transform.localPosition = initialLocalPosition;
+            transform.localRotation = initialLocalRotation;
+        }
     }
 }
