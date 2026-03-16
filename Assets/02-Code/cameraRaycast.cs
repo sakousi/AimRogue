@@ -1,37 +1,62 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CameraRaycast : MonoBehaviour
 {
-    //distance maximale du rayon
     public float range = 100f;
 
     void Update()
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Vector3 mousePos = Mouse.current.position.ReadValue();
-            Debug.Log("Mouse Position: " + mousePos);
-            ShootRay(mousePos);
+            ShootRay();
         }
     }
 
-    void ShootRay(Vector3 mousePos)
+    void ShootRay()
     {
+        if (Camera.main == null)
+        {
+            return;
+        }
 
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         RaycastHit hit;
 
         Debug.DrawRay(ray.origin, ray.direction * range, Color.red, 1f);
 
         if (Physics.Raycast(ray, out hit, range))
         {
-            hit.collider.GetComponent<life>()?.OnCollisionEnter(new Collision());
+            startGame startGameTrigger = hit.collider.GetComponent<startGame>();
+            if (startGameTrigger != null)
+            {
+                startGameTrigger.Hit();
+                return;
+            }
+
+            ExitGame exitGame = hit.collider.GetComponent<ExitGame>();
+            if (exitGame != null)
+            {
+                exitGame.Hit();
+                return;
+            }
+
+            life legacyLife = hit.collider.GetComponent<life>();
+            if (legacyLife != null)
+            {
+                if (ScoreManager.instance != null && !ScoreManager.instance.TryConsumeBullet())
+                {
+                    return;
+                }
+
+                legacyLife.Hit();
+                return;
+            }
         }
-        else
+
+        if (ScoreManager.instance != null && ScoreManager.instance.TryConsumeBullet())
         {
-            Debug.Log("Raycast: rien touché (vérifie colliders/layers et distance).");
+            ScoreManager.instance.RegisterMiss();
         }
     }
 }
