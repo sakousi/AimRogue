@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1362326933861169356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6459648472091731109}
+  - component: {fileID: 2670509703569303960}
+  m_Layer: 0
+  m_Name: BalloonSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6459648472091731109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362326933861169356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2670509703569303960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362326933861169356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eabc29e9fbfecf1b954ab6dc869a82b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BalloonSpawner
+  prefabs:
+  - type: 1
+    prefab: {fileID: 8550320807239050914, guid: 6a1404963a8139a82b99dc51dd9a37ac, type: 3}
+  - type: 0
+    prefab: {fileID: 5802034720856344963, guid: 40ec1e30114caddcc8ec883692e45be8, type: 3}
+  - type: 2
+    prefab: {fileID: 494380881192451810, guid: e7e09e8495701a80ea9d3795e7e7d8fd, type: 3}
+  - type: 3
+    prefab: {fileID: 2433526920768083011, guid: fe6dc3839c80d1053aa7b27f0a055abb, type: 3}
+  - type: 4
+    prefab: {fileID: 62993712222001414, guid: b96f152af5b633d1aa64236619a13d79, type: 3}
+  fallbackPrefab: {fileID: 8550320807239050914, guid: 6a1404963a8139a82b99dc51dd9a37ac, type: 3}
+  baseBalloonSize: 1
+  fallbackSpawnInterval: 1
+  fallbackLifetime: 3
+  xmin: -3.8
+  xmax: 3.8
+  ymin: -0.75
+  ymax: 1
+  zmin: -2
+  zmax: 2

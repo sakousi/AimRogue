@@ -16,7 +16,7 @@ MonoBehaviour:
   fireRate: 10
   burstCount: 3
   magazineSize: 30
-  startingReserveAmmo: 90
+  startingReserveAmmo: -1
   reloadDuration: 2
   weaponKickback: 0.1
   weaponRotationKick: 2
