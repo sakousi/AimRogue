@@ -25,6 +25,7 @@ public class BalloonSpawner : MonoBehaviour
 
   private void Start()
   {
+    Debug.Log("[BalloonSpawner] Start");
     ScheduleNextSpawn();
   }
 
@@ -37,42 +38,57 @@ public class BalloonSpawner : MonoBehaviour
       delay = GameManager.Instance.CurrentSpawnInterval;
     }
 
+    Debug.Log("[BalloonSpawner] ScheduleNextSpawn delay=" + delay);
     CancelInvoke(nameof(SpawnBalloon));
     Invoke(nameof(SpawnBalloon), delay);
   }
 
   private void SpawnBalloon()
   {
+    Debug.Log("[BalloonSpawner] SpawnBalloon called");
+
     if (fallbackPrefab == null && (prefabs == null || prefabs.Length == 0))
     {
+      Debug.LogError("[BalloonSpawner] No prefab assigned.");
       ScheduleNextSpawn();
       return;
     }
 
-    if (GameManager.Instance != null && !GameManager.Instance.RoundActive)
+    if (GameManager.Instance != null)
     {
-      ScheduleNextSpawn();
-      return;
+      Debug.Log("[BalloonSpawner] RoundActive=" + GameManager.Instance.RoundActive);
+
+      if (!GameManager.Instance.RoundActive)
+      {
+        Debug.LogWarning("[BalloonSpawner] Round inactive, skipping spawn.");
+        ScheduleNextSpawn();
+        return;
+      }
     }
 
     BalloonType type = GameManager.Instance != null
         ? GameManager.Instance.GetRandomBalloonType()
         : BalloonType.Red;
 
+    Debug.Log("[BalloonSpawner] Selected type=" + type);
+
     GameObject prefab = GetPrefabForType(type);
     if (prefab == null)
     {
+      Debug.LogError("[BalloonSpawner] Prefab is null for type " + type);
       ScheduleNextSpawn();
       return;
     }
 
-    GameObject balloon = Instantiate(prefab);
-
-    balloon.transform.position = transform.position + new Vector3(
+    Vector3 spawnPosition = transform.position + new Vector3(
         Random.Range(xmin, xmax),
         Random.Range(ymin, ymax),
         Random.Range(zmin, zmax)
     );
+
+    Debug.Log("[BalloonSpawner] Spawning at " + spawnPosition);
+
+    GameObject balloon = Instantiate(prefab, spawnPosition, Quaternion.identity);
 
     float sizeMultiplier = GameManager.Instance != null
         ? GameManager.Instance.CurrentBalloonSizeMultiplier
@@ -88,6 +104,11 @@ public class BalloonSpawner : MonoBehaviour
           : fallbackLifetime;
 
       target.Configure(type, lifetime);
+      Debug.Log("[BalloonSpawner] Balloon configured lifetime=" + lifetime);
+    }
+    else
+    {
+      Debug.LogWarning("[BalloonSpawner] Spawned prefab has no BalloonTarget component.");
     }
 
     ScheduleNextSpawn();
