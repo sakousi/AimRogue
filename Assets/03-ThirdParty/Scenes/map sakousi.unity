@@ -645,21 +645,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6443828241451357110, guid: 8d3eeb4e15f42b3ae9f387e786ec7056, type: 3}
   m_PrefabInstance: {fileID: 8725395110416936997}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &576988887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 576988885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa9564150434f0b7a96a5fa2279eeb7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponReload
-  weaponConfig: {fileID: 11400000, guid: c80b18ec91ca8df4fb76495e760800b2, type: 2}
-  reloadSource: {fileID: 2055216833}
-  reloadSound: {fileID: 8300000, guid: 18895d6a9066434c88019a32ec492fc7, type: 3}
 --- !u!114 &576988888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,7 +659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weaponConfig: {fileID: 11400000, guid: c80b18ec91ca8df4fb76495e760800b2, type: 2}
   weaponFire: {fileID: 576988891}
-  weaponReload: {fileID: 576988887}
+  weaponReload: {fileID: 0}
   weaponCameraRaycast: {fileID: 576988889}
   shotFired: {fileID: 576988890}
   playerCameraRecoil: {fileID: 206619861}
@@ -720,13 +705,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponFire
   weaponConfig: {fileID: 11400000, guid: c80b18ec91ca8df4fb76495e760800b2, type: 2}
-  weaponReload: {fileID: 576988887}
+  weaponReload: {fileID: 0}
   weaponCameraRaycast: {fileID: 576988889}
   shotFired: {fileID: 576988890}
   playerCameraRecoil: {fileID: 206619861}
   weaponVisual: {fileID: 576988886}
   visualReturnSpeed: 8
   visualSnappiness: 12
+--- !u!114 &576988892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576988885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa9564150434f0b7a96a5fa2279eeb7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponReload
+  weaponConfig: {fileID: 11400000, guid: c80b18ec91ca8df4fb76495e760800b2, type: 2}
+  ReloadAudioSource: {fileID: 2055216833}
+  ReloadAudioClip: {fileID: 8300000, guid: 18895d6a9066434c88019a32ec492fc7, type: 3}
 --- !u!1 &600130256
 GameObject:
   m_ObjectHideFlags: 0
@@ -2078,7 +2078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cc2cf76d4c28f4fbbbfe5de7a8a8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmmoHUD
-  weaponReload: {fileID: 576988887}
+  weaponReload: {fileID: 0}
   ammoText: {fileID: 1329933792}
 --- !u!1 &2055216831
 GameObject:
@@ -2502,7 +2502,7 @@ PrefabInstance:
       addedObject: {fileID: 576988888}
     - targetCorrespondingSourceObject: {fileID: 7640116274660708622, guid: 8d3eeb4e15f42b3ae9f387e786ec7056, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 576988887}
+      addedObject: {fileID: 576988892}
   m_SourcePrefab: {fileID: 100100000, guid: 8d3eeb4e15f42b3ae9f387e786ec7056, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
