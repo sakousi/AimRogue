@@ -25,9 +25,12 @@ public class AmmoHUD : MonoBehaviour
 
   private void HandleAmmoChanged(int currentAmmo, int reserveAmmo)
   {
-    if (ammoText != null)
-    {
-      ammoText.text = $"{currentAmmo} / {reserveAmmo}";
-    }
+    if (ammoText == null || weaponReload == null)
+      return;
+
+    string currentAmmoDisplay = weaponReload.HasInfiniteMagazine ? "∞" : currentAmmo.ToString();
+    string reserveAmmoDisplay = weaponReload.HasInfiniteReserve ? "∞" : reserveAmmo.ToString();
+
+    ammoText.text = $"{currentAmmoDisplay} / {reserveAmmoDisplay}";
   }
 }
