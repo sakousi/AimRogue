@@ -10,6 +10,8 @@ public class WeaponReload : MonoBehaviour
   public int CurrentAmmo { get; private set; }
   public int ReserveAmmo { get; private set; }
   public bool IsReloading { get; private set; }
+  public AudioSource ReloadAudioSource { get; set; }
+  public AudioClip ReloadAudioClip { get; set; }
 
   public bool HasInfiniteMagazine => weaponConfig != null && weaponConfig.magazineSize < 0;
   public bool HasInfiniteReserve => weaponConfig != null && weaponConfig.startingReserveAmmo < 0;
@@ -81,6 +83,11 @@ public class WeaponReload : MonoBehaviour
   private IEnumerator ReloadCoroutine()
   {
     IsReloading = true;
+
+    if (ReloadAudioSource != null && ReloadAudioClip != null)
+    {
+      ReloadAudioSource.PlayOneShot(ReloadAudioClip);
+    }
 
     yield return new WaitForSeconds(weaponConfig.reloadDuration);
 
