@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class WeaponReload : MonoBehaviour
 {
@@ -11,9 +10,10 @@ public class WeaponReload : MonoBehaviour
   public int CurrentAmmo { get; private set; }
   public int ReserveAmmo { get; private set; }
   public bool IsReloading { get; private set; }
-  public AudioSource reloadSource;
-  public AudioClip reloadSound;
 
+  public bool HasInfiniteMagazine => weaponConfig != null && weaponConfig.magazineSize < 0;
+  public bool HasInfiniteReserve => weaponConfig != null && weaponConfig.startingReserveAmmo < 0;
+  public bool HasInfiniteAmmo => HasInfiniteMagazine || HasInfiniteReserve;
 
   public event Action<int, int> OnAmmoChanged;
 
@@ -25,21 +25,35 @@ public class WeaponReload : MonoBehaviour
       return;
     }
 
-    CurrentAmmo = weaponConfig.magazineSize;
-    ReserveAmmo = weaponConfig.startingReserveAmmo;
+    CurrentAmmo = HasInfiniteMagazine ? -1 : weaponConfig.magazineSize;
+    ReserveAmmo = HasInfiniteReserve ? -1 : weaponConfig.startingReserveAmmo;
+
     NotifyAmmoChanged();
   }
 
   public bool CanShoot()
   {
-    return !IsReloading && CurrentAmmo > 0;
+    if (IsReloading)
+      return false;
+
+    if (HasInfiniteMagazine)
+      return true;
+
+    return CurrentAmmo > 0;
   }
 
   public bool CanReload()
   {
-    return !IsReloading
-        && CurrentAmmo < weaponConfig.magazineSize
-        && ReserveAmmo > 0;
+    if (IsReloading || weaponConfig == null)
+      return false;
+
+    if (HasInfiniteMagazine)
+      return false;
+
+    if (HasInfiniteReserve)
+      return CurrentAmmo < weaponConfig.magazineSize;
+
+    return CurrentAmmo < weaponConfig.magazineSize && ReserveAmmo > 0;
   }
 
   public bool TryConsumeBullet()
@@ -47,8 +61,12 @@ public class WeaponReload : MonoBehaviour
     if (!CanShoot())
       return false;
 
-    CurrentAmmo--;
-    NotifyAmmoChanged();
+    if (!HasInfiniteMagazine)
+    {
+      CurrentAmmo--;
+      NotifyAmmoChanged();
+    }
+
     return true;
   }
 
@@ -64,18 +82,20 @@ public class WeaponReload : MonoBehaviour
   {
     IsReloading = true;
 
-    if (reloadSource != null && reloadSound != null)
-    {
-      reloadSource.PlayOneShot(reloadSound);
-    }
-
     yield return new WaitForSeconds(weaponConfig.reloadDuration);
 
-    int missingAmmo = weaponConfig.magazineSize - CurrentAmmo;
-    int ammoToLoad = Mathf.Min(missingAmmo, ReserveAmmo);
+    if (HasInfiniteReserve)
+    {
+      CurrentAmmo = weaponConfig.magazineSize;
+    }
+    else
+    {
+      int missingAmmo = weaponConfig.magazineSize - CurrentAmmo;
+      int ammoToLoad = Mathf.Min(missingAmmo, ReserveAmmo);
 
-    CurrentAmmo += ammoToLoad;
-    ReserveAmmo -= ammoToLoad;
+      CurrentAmmo += ammoToLoad;
+      ReserveAmmo -= ammoToLoad;
+    }
 
     IsReloading = false;
     NotifyAmmoChanged();
