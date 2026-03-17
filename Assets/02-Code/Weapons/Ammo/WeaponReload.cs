@@ -7,11 +7,13 @@ public class WeaponReload : MonoBehaviour
   [Header("Ammo")]
   [SerializeField] private WeaponConfig weaponConfig;
 
+  [Header("Audio")]
+  [SerializeField] private AudioSource ReloadAudioSource;
+  [SerializeField] private AudioClip ReloadAudioClip;
+
   public int CurrentAmmo { get; private set; }
   public int ReserveAmmo { get; private set; }
   public bool IsReloading { get; private set; }
-  public AudioSource ReloadAudioSource { get; set; }
-  public AudioClip ReloadAudioClip { get; set; }
 
   public bool HasInfiniteMagazine => weaponConfig != null && weaponConfig.magazineSize < 0;
   public bool HasInfiniteReserve => weaponConfig != null && weaponConfig.startingReserveAmmo < 0;
