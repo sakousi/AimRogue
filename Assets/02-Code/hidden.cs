@@ -12,6 +12,7 @@ public class hidden : MonoBehaviour
     void Start()
     {
         visiblePosition = transform.position;
+        
         hiddenPosition = visiblePosition + new Vector3(0f, hiddenOffsetY, 0f);
     }
 
