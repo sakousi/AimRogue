@@ -1222,6 +1222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22623572ccd712046b6f050a233895ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HideableObject
+  previewOffsetY: -2.5
   hiddenOffsetY: -5
   moveSpeed: 5
 --- !u!1 &1188849253
